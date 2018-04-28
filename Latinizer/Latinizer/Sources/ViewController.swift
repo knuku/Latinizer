@@ -137,7 +137,7 @@ class ViewModel: ContactsListViewModel {
                                            companyName: abContact.organizationName)
             self?.rawContacts.append(contact)
 
-            let latinizedContact = NativeLatinizer.latinize(contact)
+            let latinizedContact = CustomLatinizer.latinize(contact)
             self?.latinizedContacts.append(latinizedContact)
         }
 

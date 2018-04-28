@@ -119,26 +119,36 @@ class ViewModel: ContactsListViewModel {
     }
 
     func performFetch() {
-        let addressBook = CNContactStore.init()
-        let identifiers = [addressBook.defaultContainerIdentifier()]
+        let contactStore = CNContactStore.init()
+        let identifiers = [contactStore.defaultContainerIdentifier()]
 
-        // TODO handle error
-        try! addressBook.containers(matching: CNContainer.predicateForContainers(withIdentifiers: identifiers))
+        do {
+            try contactStore.containers(matching: CNContainer.predicateForContainers(withIdentifiers: identifiers))
+        }
+        catch let error as NSError {
+            print(error.localizedDescription)
+        }
+
         let keysToFetch = [CNContactFamilyNameKey, CNContactGivenNameKey, CNContactOrganizationNameKey]
-        let request = CNContactFetchRequest.init(keysToFetch: keysToFetch as [CNKeyDescriptor])
+        let fetchRequest = CNContactFetchRequest.init(keysToFetch: keysToFetch as [CNKeyDescriptor])
+        fetchRequest.sortOrder = CNContactSortOrder.userDefault
 
         self.rawContacts.removeAll()
         self.latinizedContacts.removeAll()
 
-        // TODO handle error
-        try! addressBook.enumerateContacts(with: request) { [weak self] (abContact, stop) in
-            let contact: Contact = Contact(firstName: abContact.givenName,
-                                           lastName: abContact.familyName,
-                                           companyName: abContact.organizationName)
-            self?.rawContacts.append(contact)
+        do {
+            try contactStore.enumerateContacts(with: fetchRequest) { [weak self] (cnContact, stop) in
+                let contact: Contact = Contact(givenName: cnContact.givenName,
+                                               familyName: cnContact.familyName,
+                                               organizationName: cnContact.organizationName)
+                self?.rawContacts.append(contact)
 
-            let latinizedContact = CustomLatinizer.latinize(contact)
-            self?.latinizedContacts.append(latinizedContact)
+                let latinizedContact = CustomLatinizer.latinize(contact)
+                self?.latinizedContacts.append(latinizedContact)
+            }
+        }
+        catch let error as NSError {
+            print(error.localizedDescription)
         }
 
         self.delegate?.viewModelDidUpdate(self)

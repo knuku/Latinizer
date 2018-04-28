@@ -7,12 +7,25 @@
 //
 
 struct Contact {
-    var firstName: String
-    var lastName: String
-    var companyName: String
+    var givenName: String
+    var familyName: String
+    var organizationName: String
 
     func description() -> String {
-        return "\(firstName) \(lastName) \(companyName)"
+        var descriptionComponents: [String] = []
+
+        if givenName.count > 0 {
+            descriptionComponents.append(givenName)
+        }
+
+        if familyName.count > 0 {
+            descriptionComponents.append(familyName)
+        }
+
+        if organizationName.count > 0 {
+            descriptionComponents.append(organizationName)
+        }
+        return descriptionComponents.joined(separator: " ")
     }
 }
 

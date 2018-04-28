@@ -14,9 +14,22 @@ protocol Latinizer {
 
 extension Latinizer {
     static func latinize(_ input: Contact) -> Contact {
-        return Contact(firstName: Self.latinize(input.firstName),
-                       lastName: Self.latinize(input.lastName),
-                       companyName: Self.latinize(input.companyName))
+        let latinizedGivenName = Self.latinize(input.givenName)
+        let latinizedFamilyName = Self.latinize(input.familyName)
+        let latinizedOrganizationName = Self.latinize(input.organizationName)
+        if input.organizationName.count > 0 {
+            if input.givenName.count != 0 || input.familyName.count != 0 {
+                // Do not localize organization name if given or family name is presented.
+                // Organization name is not displayed in address book list in such case.
+                return Contact(givenName: latinizedGivenName,
+                               familyName: latinizedFamilyName,
+                               organizationName: input.organizationName)
+            }
+        }
+
+        return Contact(givenName: latinizedGivenName,
+                       familyName: latinizedFamilyName,
+                       organizationName: latinizedOrganizationName)
     }
 }
 

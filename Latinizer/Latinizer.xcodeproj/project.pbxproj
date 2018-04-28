@@ -105,14 +105,11 @@
 		C25782E1209353B9001B807D /* Latinizer */ = {
 			isa = PBXGroup;
 			children = (
-				C25782E2209353B9001B807D /* AppDelegate.swift */,
 				C25782E9209353BA001B807D /* Assets.xcassets */,
 				C25782EE209353BA001B807D /* Info.plist */,
-				C2F9C19B2094911400675905 /* Latinizer.swift */,
 				C25782EB209353BA001B807D /* LaunchScreen.storyboard */,
 				C25782E6209353B9001B807D /* Main.storyboard */,
-				C2F9C1952094575300675905 /* Protocols.swift */,
-				C25782E4209353B9001B807D /* ViewController.swift */,
+				C2F9C19D2094917900675905 /* Sources */,
 			);
 			path = Latinizer;
 			sourceTree = "<group>";
@@ -141,6 +138,17 @@
 				C2F9C19320935B0400675905 /* Contacts.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C2F9C19D2094917900675905 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				C25782E2209353B9001B807D /* AppDelegate.swift */,
+				C2F9C19B2094911400675905 /* Latinizer.swift */,
+				C2F9C1952094575300675905 /* Protocols.swift */,
+				C25782E4209353B9001B807D /* ViewController.swift */,
+			);
+			path = Sources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -132,9 +132,9 @@ class ViewModel: ContactsListViewModel {
 
         // TODO handle error
         try! addressBook.enumerateContacts(with: request) { [weak self] (abContact, stop) in
-            let contact: Contact = Contact(firstName: abContact.givenName,
-                                           lastName: abContact.familyName,
-                                           companyName: abContact.organizationName)
+            let contact: Contact = Contact(givenName: abContact.givenName,
+                                           familyName: abContact.familyName,
+                                           organizationName: abContact.organizationName)
             self?.rawContacts.append(contact)
 
             let latinizedContact = CustomLatinizer.latinize(contact)

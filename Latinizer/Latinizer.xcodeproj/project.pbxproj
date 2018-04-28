@@ -16,6 +16,7 @@
 		C2578303209353BA001B807D /* LatinizerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2578302209353BA001B807D /* LatinizerUITests.swift */; };
 		C2F9C19420935B0400675905 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2F9C19320935B0400675905 /* Contacts.framework */; };
 		C2F9C1962094575300675905 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F9C1952094575300675905 /* Protocols.swift */; };
+		C2F9C19C2094911400675905 /* Latinizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F9C19B2094911400675905 /* Latinizer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		C2578304209353BA001B807D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2F9C19320935B0400675905 /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
 		C2F9C1952094575300675905 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		C2F9C19B2094911400675905 /* Latinizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Latinizer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,13 +105,11 @@
 		C25782E1209353B9001B807D /* Latinizer */ = {
 			isa = PBXGroup;
 			children = (
-				C25782E2209353B9001B807D /* AppDelegate.swift */,
 				C25782E9209353BA001B807D /* Assets.xcassets */,
 				C25782EE209353BA001B807D /* Info.plist */,
 				C25782EB209353BA001B807D /* LaunchScreen.storyboard */,
 				C25782E6209353B9001B807D /* Main.storyboard */,
-				C2F9C1952094575300675905 /* Protocols.swift */,
-				C25782E4209353B9001B807D /* ViewController.swift */,
+				C2F9C19D2094917900675905 /* Sources */,
 			);
 			path = Latinizer;
 			sourceTree = "<group>";
@@ -138,6 +138,17 @@
 				C2F9C19320935B0400675905 /* Contacts.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C2F9C19D2094917900675905 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				C25782E2209353B9001B807D /* AppDelegate.swift */,
+				C2F9C19B2094911400675905 /* Latinizer.swift */,
+				C2F9C1952094575300675905 /* Protocols.swift */,
+				C25782E4209353B9001B807D /* ViewController.swift */,
+			);
+			path = Sources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -271,6 +282,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2F9C19C2094911400675905 /* Latinizer.swift in Sources */,
 				C2F9C1962094575300675905 /* Protocols.swift in Sources */,
 				C25782E5209353B9001B807D /* ViewController.swift in Sources */,
 				C25782E3209353B9001B807D /* AppDelegate.swift in Sources */,

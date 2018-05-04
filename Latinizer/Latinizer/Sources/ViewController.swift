@@ -6,13 +6,16 @@
 //  Copyright © 2018 Aliaksandr Kanaukou. All rights reserved.
 //
 
-import Contacts
 import UIKit
+
+let kPromptTitleFormat = NSLocalizedString("Are you sure you want to latinize %@?", comment: "latinize action prompt format")
 
 // TODO split into different classes
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ContactsListView {
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var applyAllButton: UIButton!
+    @IBOutlet weak var previewButton: UIButton!
 
     var viewModel: ContactsListViewModel = ViewModel.init()
 
@@ -35,8 +38,27 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     // MARK: - Actions
 
-    @IBAction func didToggleSwitch(_ sender: Any) {
-        viewModel.toggleLatinized()
+    @IBAction func didTouchedPreview(_ sender: Any) {
+        let latinized = viewModel.toggleLatinized()
+        self.applyAllButton.isHidden = !latinized
+        let title = latinized
+            ? NSLocalizedString("Original", comment: "bar button item title")
+            : NSLocalizedString("Preview", comment: "bar button item title")
+        self.previewButton.setTitle(title, for: UIControlState.normal)
+    }
+
+    @IBAction func didTouchedApplyAll(_ sender: Any) {
+        let title = String(format: kPromptTitleFormat, NSLocalizedString("all contacts", comment: "latinize action prompt filler"))
+        let alertController = UIAlertController.init(title: title, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        alertController.addAction(UIAlertAction.init(title: NSLocalizedString("Apply", comment: "'Apply' action button"),
+                                                     style: UIAlertActionStyle.destructive,
+                                                     handler: { (action) in
+            // TODO save all latinized contacts
+        }))
+        alertController.addAction(UIAlertAction.init(title: NSLocalizedString("Cancel", comment: "'Cancel' action button"),
+                                                     style: UIAlertActionStyle.cancel,
+                                                     handler: nil))
+        self.present(alertController, animated: true, completion: nil)
     }
 
     // MARK: - UITableViewDelegate, UITableViewDataSource
@@ -53,8 +75,33 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: kIdentifier)
         }
 
-        cell?.textLabel?.text = viewModel.contacts[indexPath.row].description()
+        let contact = viewModel.contacts[indexPath.row]
+        cell?.textLabel?.text = contact.description()
+        cell?.textLabel?.textColor = contact.alreadyLatinized ? UIColor.gray : UIColor.black
+        
         return cell!
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let contact = viewModel.contacts[indexPath.row]
+        if contact.alreadyLatinized {
+            return;
+        }
+
+        let title = String(format: kPromptTitleFormat, viewModel.latinizedContactDescriptionAtIndex(indexPath.row))
+        let alertController = UIAlertController.init(title: title, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        alertController.addAction(UIAlertAction.init(title: NSLocalizedString("Apply", comment: "'Apply' action button"),
+                                                     style: UIAlertActionStyle.destructive,
+                                                     handler: { (action) in
+            // TODO save this latinized contacts
+            tableView.deselectRow(at: indexPath, animated: true)
+        }))
+        alertController.addAction(UIAlertAction.init(title: NSLocalizedString("Cancel", comment: "'Cancel' action button"),
+                                                     style: UIAlertActionStyle.cancel,
+                                                     handler: { (action) in
+            tableView.deselectRow(at: indexPath, animated: true)
+        }))
+        self.present(alertController, animated: true, completion: nil)
     }
 
     // MARK: - Contacts
@@ -69,88 +116,5 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     func authorizationDenied() {
         // TODO present 'no permisssions screen'
-    }
-}
-
-
-class ViewModel: ContactsListViewModel {
-    var delegate: ContactsListViewModelDelegate?
-
-    var latinized = false
-
-    var contacts: [Contact] {
-        get {
-            return latinized ? latinizedContacts : rawContacts
-        }
-    }
-
-    private var latinizedContacts: [Contact] = []
-    private var rawContacts: [Contact] = []
-
-    func fetchContacts() {
-        let entityType = CNEntityType.contacts
-        switch CNContactStore.authorizationStatus(for: entityType) {
-        case .notDetermined:
-            let contactStore = CNContactStore.init()
-            contactStore.requestAccess(for: entityType) { [weak self] (granted, error) in
-                if granted {
-                    self?.fetchContacts()
-                }
-            }
-            break
-
-        case .authorized:
-            self.performFetch()
-            break
-
-        case .denied:
-            self.delegate?.authorizationDenied()
-            break
-
-        default:
-            // do nothing
-            break
-        }
-    }
-
-    func toggleLatinized() {
-        latinized = !latinized
-        self.delegate?.viewModelDidUpdate(self)
-    }
-
-    func performFetch() {
-        let contactStore = CNContactStore.init()
-        let identifiers = [contactStore.defaultContainerIdentifier()]
-
-        do {
-            try contactStore.containers(matching: CNContainer.predicateForContainers(withIdentifiers: identifiers))
-        }
-        catch let error as NSError {
-            print(error.localizedDescription)
-        }
-
-        let keysToFetch = [CNContactFamilyNameKey, CNContactGivenNameKey, CNContactOrganizationNameKey]
-        let fetchRequest = CNContactFetchRequest.init(keysToFetch: keysToFetch as [CNKeyDescriptor])
-        fetchRequest.sortOrder = CNContactSortOrder.userDefault
-
-        self.rawContacts.removeAll()
-        self.latinizedContacts.removeAll()
-
-        do {
-            try contactStore.enumerateContacts(with: fetchRequest) { [weak self] (cnContact, stop) in
-                let contact: Contact = Contact(givenName: cnContact.givenName,
-                                               familyName: cnContact.familyName,
-                                               organizationName: cnContact.organizationName)
-                self?.rawContacts.append(contact)
-
-                let latinizedContact = CustomLatinizer.latinize(contact)
-                self?.latinizedContacts.append(latinizedContact)
-            }
-        }
-        catch let error as NSError {
-            print(error.localizedDescription)
-        }
-
-        self.delegate?.viewModelDidUpdate(self)
     }
 }

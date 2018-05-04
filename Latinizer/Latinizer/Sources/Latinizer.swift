@@ -17,19 +17,28 @@ extension Latinizer {
         let latinizedGivenName = Self.latinize(input.givenName)
         let latinizedFamilyName = Self.latinize(input.familyName)
         let latinizedOrganizationName = Self.latinize(input.organizationName)
+
+        var alreadyLatinized = true
+        alreadyLatinized = alreadyLatinized && (latinizedGivenName == input.givenName);
+        alreadyLatinized = alreadyLatinized && (latinizedFamilyName == input.familyName);
+
         if input.organizationName.count > 0 {
+            alreadyLatinized = alreadyLatinized && (latinizedOrganizationName == input.organizationName);
+
             if input.givenName.count != 0 || input.familyName.count != 0 {
                 // Do not localize organization name if given or family name is presented.
                 // Organization name is not displayed in address book list in such case.
                 return Contact(givenName: latinizedGivenName,
                                familyName: latinizedFamilyName,
-                               organizationName: input.organizationName)
+                               organizationName: input.organizationName,
+                               alreadyLatinized: alreadyLatinized)
             }
         }
 
         return Contact(givenName: latinizedGivenName,
                        familyName: latinizedFamilyName,
-                       organizationName: latinizedOrganizationName)
+                       organizationName: latinizedOrganizationName,
+                       alreadyLatinized: alreadyLatinized)
     }
 }
 

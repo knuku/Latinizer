@@ -27,17 +27,27 @@
                                             <constraint firstAttribute="height" constant="46" id="AJl-o7-vBL"/>
                                         </constraints>
                                         <items>
-                                            <barButtonItem style="plain" systemItem="flexibleSpace" id="l9h-Gt-wRJ"/>
-                                            <barButtonItem style="plain" id="HeP-hi-7Qw">
-                                                <switch key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="Pcz-Ll-RLD">
-                                                    <rect key="frame" x="162" y="7.6666666666666679" width="51" height="31.000000000000004"/>
+                                            <barButtonItem style="plain" id="Bgg-LG-4Ze">
+                                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="G9m-4Q-RiC">
+                                                    <rect key="frame" x="16" y="8" width="54" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <state key="normal" title="Preview"/>
                                                     <connections>
-                                                        <action selector="didToggleSwitch:" destination="BYZ-38-t0r" eventType="valueChanged" id="H5H-3s-n8G"/>
+                                                        <action selector="didTouchedPreview:" destination="BYZ-38-t0r" eventType="touchUpInside" id="QCu-Wi-EdA"/>
                                                     </connections>
-                                                </switch>
+                                                </button>
                                             </barButtonItem>
-                                            <barButtonItem style="plain" systemItem="flexibleSpace" id="vxg-fL-iVd"/>
+                                            <barButtonItem style="plain" systemItem="flexibleSpace" id="l9h-Gt-wRJ"/>
+                                            <barButtonItem style="plain" id="PI7-RP-z8w">
+                                                <button key="customView" hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3MV-Fn-pCW">
+                                                    <rect key="frame" x="298" y="8" width="61" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <state key="normal" title="Apply All"/>
+                                                    <connections>
+                                                        <action selector="didTouchedApplyAll:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8ip-Y3-Bs7"/>
+                                                    </connections>
+                                                </button>
+                                            </barButtonItem>
                                         </items>
                                     </toolbar>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="GaX-T9-Mtd">
@@ -61,6 +71,8 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="applyAllButton" destination="3MV-Fn-pCW" id="qV2-g4-Ox8"/>
+                        <outlet property="previewButton" destination="G9m-4Q-RiC" id="oRN-yk-7u7"/>
                         <outlet property="tableView" destination="GaX-T9-Mtd" id="Zn5-Ru-N4C"/>
                     </connections>
                 </viewController>

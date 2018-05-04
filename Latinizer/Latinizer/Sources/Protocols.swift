@@ -10,6 +10,7 @@ struct Contact {
     var givenName: String
     var familyName: String
     var organizationName: String
+    var alreadyLatinized: Bool
 
     func description() -> String {
         var descriptionComponents: [String] = []
@@ -38,7 +39,8 @@ protocol ContactsListViewModel {
     var delegate :ContactsListViewModelDelegate? { get set }
     var contacts :[Contact] { get }
     func fetchContacts()
-    func toggleLatinized()
+    func toggleLatinized() -> Bool
+    func latinizedContactDescriptionAtIndex(_ index: Int) -> String
 }
 
 protocol ContactsListView: ContactsListViewModelDelegate {

@@ -13,6 +13,8 @@ import UIKit
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ContactsListView {
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var applyAllButton: UIButton!
+    @IBOutlet weak var previewButton: UIButton!
 
     var viewModel: ContactsListViewModel = ViewModel.init()
 
@@ -35,8 +37,21 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     // MARK: - Actions
 
-    @IBAction func didToggleSwitch(_ sender: Any) {
-        viewModel.toggleLatinized()
+    @IBAction func didTouchedPreview(_ sender: Any) {
+        let latinized = viewModel.toggleLatinized()
+        self.applyAllButton.isHidden = !latinized
+        let title = latinized ? "Original" : "Preview"
+        self.previewButton.setTitle(title, for: UIControlState.normal)
+    }
+
+    @IBAction func didTouchedApplyAll(_ sender: Any) {
+        let title = "Are you sure you want to latinize all contacts?"
+        let alertController = UIAlertController.init(title: title, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        alertController.addAction(UIAlertAction.init(title: "Apply", style: UIAlertActionStyle.destructive, handler: { (action) in
+            // TODO save all latinized contacts
+        }))
+        alertController.addAction(UIAlertAction.init(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
     }
 
     // MARK: - UITableViewDelegate, UITableViewDataSource
@@ -53,8 +68,29 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: kIdentifier)
         }
 
-        cell?.textLabel?.text = viewModel.contacts[indexPath.row].description()
+        let contact = viewModel.contacts[indexPath.row]
+        cell?.textLabel?.text = contact.description()
+        cell?.textLabel?.textColor = contact.alreadyLatinized ? UIColor.gray : UIColor.black
+        
         return cell!
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let contact = viewModel.contacts[indexPath.row]
+        if contact.alreadyLatinized {
+            return;
+        }
+
+        let title = String(format: "Are you sure you want to apply [%@]?", viewModel.latinizedContactDescriptionAtIndex(indexPath.row)!)
+        let alertController = UIAlertController.init(title: title, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        alertController.addAction(UIAlertAction.init(title: "Apply", style: UIAlertActionStyle.destructive, handler: { (action) in
+            // TODO save this latinized contacts
+            tableView.deselectRow(at: indexPath, animated: true)
+        }))
+        alertController.addAction(UIAlertAction.init(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (action) in
+            tableView.deselectRow(at: indexPath, animated: true)
+        }))
+        self.present(alertController, animated: true, completion: nil)
     }
 
     // MARK: - Contacts
@@ -113,9 +149,14 @@ class ViewModel: ContactsListViewModel {
         }
     }
 
-    func toggleLatinized() {
+    func toggleLatinized() -> Bool {
         latinized = !latinized
         self.delegate?.viewModelDidUpdate(self)
+        return latinized
+    }
+
+    func latinizedContactDescriptionAtIndex(_ index: Int) -> String? {
+        return latinizedContacts.count > index ? latinizedContacts[index].description() : ""
     }
 
     func performFetch() {
@@ -138,12 +179,14 @@ class ViewModel: ContactsListViewModel {
 
         do {
             try contactStore.enumerateContacts(with: fetchRequest) { [weak self] (cnContact, stop) in
-                let contact: Contact = Contact(givenName: cnContact.givenName,
+                var contact: Contact = Contact(givenName: cnContact.givenName,
                                                familyName: cnContact.familyName,
-                                               organizationName: cnContact.organizationName)
-                self?.rawContacts.append(contact)
-
+                                               organizationName: cnContact.organizationName,
+                                               alreadyLatinized: false)
                 let latinizedContact = CustomLatinizer.latinize(contact)
+                contact.alreadyLatinized = latinizedContact.alreadyLatinized
+                
+                self?.rawContacts.append(contact)
                 self?.latinizedContacts.append(latinizedContact)
             }
         }

@@ -14,6 +14,7 @@
 		C25782ED209353BA001B807D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C25782EB209353BA001B807D /* LaunchScreen.storyboard */; };
 		C25782F8209353BA001B807D /* LatinizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25782F7209353BA001B807D /* LatinizerTests.swift */; };
 		C2578303209353BA001B807D /* LatinizerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2578302209353BA001B807D /* LatinizerUITests.swift */; };
+		C25EFF40209C55230056029E /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25EFF3F209C55230056029E /* ViewModel.swift */; };
 		C2F9C19420935B0400675905 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2F9C19320935B0400675905 /* Contacts.framework */; };
 		C2F9C1962094575300675905 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F9C1952094575300675905 /* Protocols.swift */; };
 		C2F9C19C2094911400675905 /* Latinizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F9C19B2094911400675905 /* Latinizer.swift */; };
@@ -50,6 +51,7 @@
 		C25782FE209353BA001B807D /* LatinizerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LatinizerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2578302209353BA001B807D /* LatinizerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatinizerUITests.swift; sourceTree = "<group>"; };
 		C2578304209353BA001B807D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C25EFF3F209C55230056029E /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		C2F9C19320935B0400675905 /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
 		C2F9C1952094575300675905 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		C2F9C19B2094911400675905 /* Latinizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Latinizer.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				C2F9C19B2094911400675905 /* Latinizer.swift */,
 				C2F9C1952094575300675905 /* Protocols.swift */,
 				C25782E4209353B9001B807D /* ViewController.swift */,
+				C25EFF3F209C55230056029E /* ViewModel.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -282,6 +285,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C25EFF40209C55230056029E /* ViewModel.swift in Sources */,
 				C2F9C19C2094911400675905 /* Latinizer.swift in Sources */,
 				C2F9C1962094575300675905 /* Protocols.swift in Sources */,
 				C25782E5209353B9001B807D /* ViewController.swift in Sources */,

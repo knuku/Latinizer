@@ -9,6 +9,8 @@
 import Contacts
 import UIKit
 
+let kPromptTitleFormat = NSLocalizedString("Are you sure you want to latinize %@?", comment: "latinize action prompt format")
+
 // TODO split into different classes
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ContactsListView {
@@ -40,17 +42,23 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBAction func didTouchedPreview(_ sender: Any) {
         let latinized = viewModel.toggleLatinized()
         self.applyAllButton.isHidden = !latinized
-        let title = latinized ? "Original" : "Preview"
+        let title = latinized
+            ? NSLocalizedString("Original", comment: "bar button item title")
+            : NSLocalizedString("Preview", comment: "bar button item title")
         self.previewButton.setTitle(title, for: UIControlState.normal)
     }
 
     @IBAction func didTouchedApplyAll(_ sender: Any) {
-        let title = "Are you sure you want to latinize all contacts?"
+        let title = String(format: kPromptTitleFormat, NSLocalizedString("all contacts", comment: "latinize action prompt filler"))
         let alertController = UIAlertController.init(title: title, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
-        alertController.addAction(UIAlertAction.init(title: "Apply", style: UIAlertActionStyle.destructive, handler: { (action) in
+        alertController.addAction(UIAlertAction.init(title: NSLocalizedString("Apply", comment: "'Apply' action button"),
+                                                     style: UIAlertActionStyle.destructive,
+                                                     handler: { (action) in
             // TODO save all latinized contacts
         }))
-        alertController.addAction(UIAlertAction.init(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
+        alertController.addAction(UIAlertAction.init(title: NSLocalizedString("Cancel", comment: "'Cancel' action button"),
+                                                     style: UIAlertActionStyle.cancel,
+                                                     handler: nil))
         self.present(alertController, animated: true, completion: nil)
     }
 
@@ -81,13 +89,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             return;
         }
 
-        let title = String(format: "Are you sure you want to apply [%@]?", viewModel.latinizedContactDescriptionAtIndex(indexPath.row)!)
+        let title = String(format: kPromptTitleFormat, viewModel.latinizedContactDescriptionAtIndex(indexPath.row))
         let alertController = UIAlertController.init(title: title, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
-        alertController.addAction(UIAlertAction.init(title: "Apply", style: UIAlertActionStyle.destructive, handler: { (action) in
+        alertController.addAction(UIAlertAction.init(title: NSLocalizedString("Apply", comment: "'Apply' action button"),
+                                                     style: UIAlertActionStyle.destructive,
+                                                     handler: { (action) in
             // TODO save this latinized contacts
             tableView.deselectRow(at: indexPath, animated: true)
         }))
-        alertController.addAction(UIAlertAction.init(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (action) in
+        alertController.addAction(UIAlertAction.init(title: NSLocalizedString("Cancel", comment: "'Cancel' action button"),
+                                                     style: UIAlertActionStyle.cancel,
+                                                     handler: { (action) in
             tableView.deselectRow(at: indexPath, animated: true)
         }))
         self.present(alertController, animated: true, completion: nil)
@@ -155,7 +167,7 @@ class ViewModel: ContactsListViewModel {
         return latinized
     }
 
-    func latinizedContactDescriptionAtIndex(_ index: Int) -> String? {
+    func latinizedContactDescriptionAtIndex(_ index: Int) -> String {
         return latinizedContacts.count > index ? latinizedContacts[index].description() : ""
     }
 

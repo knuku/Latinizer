@@ -40,7 +40,7 @@ protocol ContactsListViewModel {
     var contacts :[Contact] { get }
     func fetchContacts()
     func toggleLatinized() -> Bool
-    func latinizedContactDescriptionAtIndex(_ index: Int) -> String?
+    func latinizedContactDescriptionAtIndex(_ index: Int) -> String
 }
 
 protocol ContactsListView: ContactsListViewModelDelegate {
